@@ -1,4 +1,4 @@
-package com.shenkar.ir;
+package com.shenkar.ir.view;
 
 public class EntryPoint {
 

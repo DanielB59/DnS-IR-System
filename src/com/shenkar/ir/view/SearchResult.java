@@ -3,10 +3,18 @@ package com.shenkar.ir.view;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.JToggleButton;
+import java.awt.Panel;
+import javax.swing.JTextArea;
+import java.awt.Color;
+import javax.swing.JTextPane;
 
 public class SearchResult {
 
-	private JFrame frame;
+	private JFrame frmResultPage;
 
 	/**
 	 * Launch the application.
@@ -16,7 +24,7 @@ public class SearchResult {
 			public void run() {
 				try {
 					SearchResult window = new SearchResult();
-					window.frame.setVisible(true);
+					window.frmResultPage.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -35,9 +43,10 @@ public class SearchResult {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmResultPage = new JFrame();
+		frmResultPage.setTitle("Result page");
+		frmResultPage.setBounds(100, 100, 450, 300);
+		frmResultPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmResultPage.getContentPane().setLayout(null);
 	}
-
 }

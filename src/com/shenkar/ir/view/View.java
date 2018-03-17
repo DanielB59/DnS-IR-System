@@ -16,14 +16,53 @@ import javax.swing.JEditorPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ButtonGroup;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import java.awt.Canvas;
+import javax.swing.JLabel;
+import java.awt.Panel;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 public class View extends JFrame{
+	JPanel panelAdmin = new JPanel();
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	public View() {
+		
+		setTitle("Ir system");
 		setBackground(new Color(255, 255, 255));
 		getContentPane().setLayout(null);
 		
+		JPanel panel = new JPanel();
+		panel.setBounds(0, 0, 424, 319);
+		getContentPane().add(panel);
+		panel.setLayout(null);
+		
+		JFormattedTextField formattedTextField = new JFormattedTextField();
+		formattedTextField.setBounds(49, 189, 337, 23);
+		panel.add(formattedTextField);
+		formattedTextField.setBackground(new Color(255, 255, 153));
+		
+		JButton btnAdmin = new JButton("Admin panel");
+		btnAdmin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				setContentPane(panelAdmin);
+				repaint();
+				panelAdmin.revalidate();
+			}
+		});
+		btnAdmin.setBounds(10, 11, 110, 23);
+		panel.add(btnAdmin);
+		
 		Button button = new Button("press for search");
+		button.setBounds(164, 238, 96, 22);
+		panel.add(button);
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -35,33 +74,45 @@ public class View extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		button.setBounds(159, 240, 141, 22);
-		getContentPane().add(button);
 		
-		JFormattedTextField formattedTextField = new JFormattedTextField();
-		formattedTextField.setBackground(new Color(255, 255, 153));
-		formattedTextField.setBounds(29, 151, 375, 29);
-		getContentPane().add(formattedTextField);
+		JLabel lblIrSystem = new JLabel("IR System");
+		lblIrSystem.setBounds(121, 83, 184, 60);
+		panel.add(lblIrSystem);
+		lblIrSystem.setHorizontalAlignment(SwingConstants.CENTER);
+		lblIrSystem.setFont(new Font("David", Font.BOLD, 38));
 		
-		JButton btnLogin = new JButton("Sgin out");
-		buttonGroup.add(btnLogin);
-		btnLogin.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnLogin.setBounds(245, 11, 86, 23);
-		getContentPane().add(btnLogin);
 		
-		JButton button_1 = new JButton("Login");
-		button_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
-		buttonGroup.add(button_1);
-		button_1.setBounds(338, 11, 86, 23);
-		getContentPane().add(button_1);
+		
+		getContentPane().add(panelAdmin);
+		 
+		panelAdmin.add(new JButton("login"));
+		
+			panelAdmin.setLayout(null);
+
+			JLabel userLabel = new JLabel("User");
+			userLabel.setBounds(10, 10, 80, 25);
+			panelAdmin.add(userLabel);
+
+			JTextField userText = new JTextField(20);
+			userText.setBounds(100, 10, 160, 25);
+			panelAdmin.add(userText);
+
+			JLabel passwordLabel = new JLabel("Password");
+			passwordLabel.setBounds(10, 40, 80, 25);
+			panelAdmin.add(passwordLabel);
+
+			JPasswordField passwordText = new JPasswordField(20);
+			passwordText.setBounds(100, 40, 160, 25);
+			panelAdmin.add(passwordText);
+
+			JButton loginButton = new JButton("login");
+			loginButton.setBounds(10, 80, 80, 25);
+			panelAdmin.add(loginButton);
+		
+	
+		
+		
+	
 	}
 			
 	public static void main(String[] args)    { 
@@ -73,5 +124,22 @@ public class View extends JFrame{
 		    frame.setSize(600, 600);
 		    frame.setAlwaysOnTop(true);
 		    frame.setVisible(true); 
+	}
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
 	}
 }

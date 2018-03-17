@@ -1,5 +1,5 @@
 package com.shenkar.ir.entities;
 
-public class Index implements Entity {
+public class Index implements IEntity {
 	//term, doc. #, hits
 }

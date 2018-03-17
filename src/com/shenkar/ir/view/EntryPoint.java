@@ -1,5 +1,6 @@
 package com.shenkar.ir.view;
 
+import com.shenkar.ir.model.Dao;
 import com.shenkar.ir.optimizations.*;
 
 public class EntryPoint {
@@ -20,6 +21,13 @@ public class EntryPoint {
 		System.out.println(Algorithms.stem("Armenia"));
 		System.out.println(Algorithms.stem("Israel"));
 		System.out.println(Algorithms.stem("Izzreil"));
+		
+		try {
+			Dao.getInstance();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

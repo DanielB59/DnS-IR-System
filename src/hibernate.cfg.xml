@@ -5,7 +5,7 @@
 <hibernate-configuration>
 	<session-factory>
 		<property name="hibernate.dialect">
-		   org.hibernate.dialect.MySQLDialect
+		   org.hibernate.dialect.MySQL5Dialect
 		</property>
 		<property name="hibernate.connection.driver_class">
 		   com.mysql.jdbc.Driver
@@ -22,13 +22,11 @@
 		<property name="hibernate.connection.password">
 		   rootir
 		</property>
-		<property name="hbm2ddl.auto">update</property>
-<!-- 		<property name="hibernate.current_session_context_class">jta</property> -->
-<!-- 		<property name="transaction.factory_class">org.hibernate.transaction.JTATransactionFactory</property> -->
-<!-- 		<property name="hibernate.transaction.manager_lookup_class">org.hibernate.transaction.JBossTransactionManagerLookup</property> -->
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		
 		<!-- List of XML mapping files -->
-		<!-- <mapping resource="il/ac/shenkar/todolist/models/Task.hbm.xml"/> -->
 		<mapping class="com.shenkar.ir.entities.User" />
+		<mapping class="com.shenkar.ir.entities.Index" />
 
 	</session-factory>
 </hibernate-configuration>

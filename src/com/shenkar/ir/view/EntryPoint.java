@@ -1,8 +1,14 @@
 package com.shenkar.ir.view;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
+
+import org.hibernate.HibernateException;
 
 import com.shenkar.ir.entities.*;
 import com.shenkar.ir.model.Dao;
@@ -15,7 +21,7 @@ public class EntryPoint {
 		System.out.println("hello " + str);
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, HibernateException, ClassNotFoundException {
 		System.out.println("hello world!");
 		hello("daniel");
 		
@@ -30,6 +36,7 @@ public class EntryPoint {
 		
 		ParsingService parser = new ParsingService();
 		parser.readFile(new File("info.txt"));
+		Dao.getInstance().entityTerms(parser.toTerms());
 		
 //		Document doc = new Document(1, "", "book", "myself", "derp!");
 //		Term term = new Term("hello", 1, 10);

@@ -30,7 +30,7 @@ public class Term implements IEntity, Serializable {
 		super();
 	}
 
-	public Term(String term, Integer numberOfDocs, Integer hits) {
+	public Term(String term) {
 		super();
 		this.term = term;
 		this.numberOfDocs = numberOfDocs;

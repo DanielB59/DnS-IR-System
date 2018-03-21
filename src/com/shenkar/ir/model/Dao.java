@@ -1,10 +1,16 @@
 package com.shenkar.ir.model;
 
+import java.util.*;
+
+import javax.persistence.PersistenceException;
+
 import org.hibernate.*;
 import org.hibernate.boot.*;
 import org.hibernate.boot.registry.*;
+import org.hibernate.exception.ConstraintViolationException;
 
-import com.shenkar.ir.entities.IEntity;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import com.shenkar.ir.entities.*;
 
 public class Dao implements IDao {
 	
@@ -36,23 +42,26 @@ public class Dao implements IDao {
 		return instance;
 	}
 	
-	public void entityInsert(IEntity... entities) throws HibernateException {	//	TODO	replace with custom exception!
+	public void entityTerms(List<Term> terms) throws HibernateException {	//	TODO	replace with custom exception!
 		Session session = null;
 		
 		try {
 			session = factory.openSession();
 			
-			session.beginTransaction();
-			
-			for (IEntity entity : entities)
-				session.save(entity);
-			
-			session.getTransaction().commit();
+			for (IEntity term : terms)
+				try {
+					session.beginTransaction();
+					session.save(term);
+					session.getTransaction().commit();
+				}
+				catch (PersistenceException e1) {
+					session.getTransaction().rollback();
+				}
 		}
-		catch (HibernateException e) {
-			e.printStackTrace();
+		catch (HibernateException e2) {
+			e2.printStackTrace();
 			session.getTransaction().rollback();
-			throw e;
+			throw e2;
 		}
 		finally {
 			session.close();

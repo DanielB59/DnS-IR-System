@@ -6,37 +6,34 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Formula;
 
 @Entity
-@Table(name = "indexes")
+@Table(name = "terms")
 @DynamicUpdate
 @DynamicInsert
-public class Index implements IEntity, Serializable {
+public class Term implements IEntity, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column
 	private String term;
 	
-	@OneToOne
-	@JoinColumn(name = "doc_id", referencedColumnName = "id")
-	@Fetch(FetchMode.SELECT)
-	private Document document;
-	
-	@Column(nullable = false)
-	private int hits = 0;
+	@Formula("0")
+	transient private Integer numberOfDocs;
 
-	public Index() {
+	@Formula("0")
+	transient private Integer hits;
+
+	public Term() {
 		super();
 	}
 
-	public Index(String term, Document document, int hits) {
+	public Term(String term, Integer numberOfDocs, Integer hits) {
 		super();
 		this.term = term;
-		this.document = document;
+		this.numberOfDocs = numberOfDocs;
 		this.hits = hits;
 	}
 
@@ -48,20 +45,20 @@ public class Index implements IEntity, Serializable {
 		this.term = term;
 	}
 
-	public Document getDocument() {
-		return document;
+	public Integer getNumberOfDocs() {
+		return numberOfDocs;
 	}
 
-	public void setDocument(Document document) {
-		this.document = document;
+	public void setNumberOfDocs(Integer numberOfDocs) {
+		this.numberOfDocs = numberOfDocs;
 	}
 
-	public int getHits() {
+	public int getFrequency() {
 		return hits;
 	}
 
-	public void setHits(int hits) {
-		this.hits = hits;
+	public void setFrequency(Integer frequency) {
+		this.hits = frequency;
 	}
 
 	public static long getSerialversionuid() {
@@ -70,15 +67,13 @@ public class Index implements IEntity, Serializable {
 
 	@Override
 	public String toString() {
-		return "Index [term=" + term + ", document=" + document + ", hits=" + hits + "]";
+		return "Term [term=" + term + ", numberOfDocs=" + numberOfDocs + ", frequency=" + hits + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((document == null) ? 0 : document.hashCode());
-		result = prime * result + hits;
 		result = prime * result + ((term == null) ? 0 : term.hashCode());
 		return result;
 	}
@@ -91,14 +86,7 @@ public class Index implements IEntity, Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Index other = (Index) obj;
-		if (document == null) {
-			if (other.document != null)
-				return false;
-		} else if (!document.equals(other.document))
-			return false;
-		if (hits != other.hits)
-			return false;
+		Term other = (Term) obj;
 		if (term == null) {
 			if (other.term != null)
 				return false;

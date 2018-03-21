@@ -17,17 +17,33 @@ public class User implements IEntity, Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Integer id;
 	
 	@Column(nullable = false)
-	private String name = "Generic user";
+	private String name;
 	
-	public User() {}
-	
-	public User(String name) {
-		this.setName(name);
+	@Column(nullable = false)
+	private String password;
+
+	public User() {
+		super();
 	}
-	
+
+	public User(Integer id, String name, String password) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.password = password;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -36,9 +52,21 @@ public class User implements IEntity, Serializable {
 		this.name = name;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + "]";
+		return "User [id=" + id + ", name=" + name + ", password=" + password + "]";
 	}
 
 	@Override
@@ -47,6 +75,7 @@ public class User implements IEntity, Serializable {
 		int result = 1;
 		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		return result;
 	}
 
@@ -66,7 +95,11 @@ public class User implements IEntity, Serializable {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
 		return true;
 	}
-
 }

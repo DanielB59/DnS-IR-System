@@ -4,6 +4,8 @@ import org.hibernate.*;
 import org.hibernate.boot.*;
 import org.hibernate.boot.registry.*;
 
+import com.shenkar.ir.entities.IEntity;
+
 public class Dao implements IDao {
 	
 	private static Dao instance = null;
@@ -34,4 +36,26 @@ public class Dao implements IDao {
 		return instance;
 	}
 	
+	public void entityInsert(IEntity... entities) throws HibernateException {	//	TODO	replace with custom exception!
+		Session session = null;
+		
+		try {
+			session = factory.openSession();
+			
+			session.beginTransaction();
+			
+			for (IEntity entity : entities)
+				session.save(entity);
+			
+			session.getTransaction().commit();
+		}
+		catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+			throw e;
+		}
+		finally {
+			session.close();
+		}
+	}
 }

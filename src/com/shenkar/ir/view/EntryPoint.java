@@ -1,6 +1,12 @@
 package com.shenkar.ir.view;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import com.shenkar.ir.entities.*;
 import com.shenkar.ir.model.Dao;
+import com.shenkar.ir.model.ParsingService;
 import com.shenkar.ir.optimizations.*;
 
 public class EntryPoint {
@@ -9,7 +15,7 @@ public class EntryPoint {
 		System.out.println("hello " + str);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		System.out.println("hello world!");
 		hello("daniel");
 		
@@ -22,12 +28,20 @@ public class EntryPoint {
 		System.out.println(Algorithms.stem("Israel"));
 		System.out.println(Algorithms.stem("Izzreil"));
 		
-		try {
-			Dao.getInstance();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ParsingService parser = new ParsingService();
+		parser.readFile(new File("info.txt"));
+		
+//		Document doc = new Document(1, "", "book", "myself", "derp!");
+//		Term term = new Term("hello", 1, 10);
+//		Link link = new Link(term, doc, 10);
+//		
+//		try {
+//			Dao.getInstance();
+//			Dao.getInstance().entityInsert(doc, term, link);
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 }

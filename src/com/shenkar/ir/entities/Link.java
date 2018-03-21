@@ -10,41 +10,45 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 @Entity
-@Table(name = "indexes")
+@Table(name = "links")
 @DynamicUpdate
 @DynamicInsert
-public class Index implements IEntity, Serializable {
-
+public class Link implements IEntity, Serializable {
+	
 	private static final long serialVersionUID = 1L;
+
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "term_val", referencedColumnName = "term")
+	@Fetch(FetchMode.SELECT)
+	@OrderBy("term ASC")
+	private Term term;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String term;
-	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "doc_id", referencedColumnName = "id")
 	@Fetch(FetchMode.SELECT)
 	private Document document;
 	
 	@Column(nullable = false)
-	private int hits = 0;
+	private Integer hits = 0;
 
-	public Index() {
+	public Link() {
 		super();
 	}
 
-	public Index(String term, Document document, int hits) {
+	public Link(Term term, Document document, Integer hits) {
 		super();
 		this.term = term;
 		this.document = document;
 		this.hits = hits;
 	}
 
-	public String getTerm() {
+	public Term getTerm() {
 		return term;
 	}
 
-	public void setTerm(String term) {
+	public void setTerm(Term term) {
 		this.term = term;
 	}
 
@@ -56,11 +60,11 @@ public class Index implements IEntity, Serializable {
 		this.document = document;
 	}
 
-	public int getHits() {
+	public Integer getHits() {
 		return hits;
 	}
 
-	public void setHits(int hits) {
+	public void setHits(Integer hits) {
 		this.hits = hits;
 	}
 
@@ -70,7 +74,7 @@ public class Index implements IEntity, Serializable {
 
 	@Override
 	public String toString() {
-		return "Index [term=" + term + ", document=" + document + ", hits=" + hits + "]";
+		return "Link [term=" + term + ", document=" + document + ", hits=" + hits + "]";
 	}
 
 	@Override
@@ -91,7 +95,7 @@ public class Index implements IEntity, Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Index other = (Index) obj;
+		Link other = (Link) obj;
 		if (document == null) {
 			if (other.document != null)
 				return false;

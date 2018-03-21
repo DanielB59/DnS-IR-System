@@ -42,7 +42,7 @@ public class Dao implements IDao {
 		return instance;
 	}
 	
-	public void entityTerms(List<Term> terms) throws HibernateException {	//	TODO	replace with custom exception!
+	public void insertTerms(List<Term> terms) throws HibernateException {	//	TODO	replace with custom exception!
 		Session session = null;
 		
 		try {
@@ -62,6 +62,29 @@ public class Dao implements IDao {
 			e2.printStackTrace();
 			session.getTransaction().rollback();
 			throw e2;
+		}
+		finally {
+			session.close();
+		}
+	}
+	
+	public void insertEntity(IEntity... entities) throws HibernateException {	//	TODO	replace with custom exception!
+		Session session = null;
+		
+		try {
+			session = factory.openSession();
+			
+			session.beginTransaction();
+			
+			for (IEntity entity : entities)
+				session.save(entity);
+			
+			session.getTransaction().commit();
+		}
+		catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+			throw e;
 		}
 		finally {
 			session.close();

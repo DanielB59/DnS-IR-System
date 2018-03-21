@@ -43,14 +43,20 @@ public class ParsingService implements Service {
 			for (String word : split) {
 				if (stopList.contains(word))
 					continue;
-				words.add(Algorithms.soundex(Algorithms.stem(word)));
+//				words.add(Algorithms.soundex(Algorithms.stem(word)));
+				words.add(word);
 			}
 		}
 		System.out.println(words);
 		reader.close();
 	}
 	
-	public List<Term> toTerms() {
+	public static void transform(List<String> words) {
+		for (int i = 0; i < words.size(); ++i)
+			words.set(i, Algorithms.soundex(Algorithms.stem(words.get(i))));
+	}
+	
+	public static List<Term> toTerms(List<String> words) {
 		List<Term> terms = new ArrayList<>();
 		for (String word : words)
 			terms.add(new Term(word));

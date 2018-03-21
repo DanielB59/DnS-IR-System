@@ -20,16 +20,15 @@ public class Index  {
 		for (String word : words) {
 			terms.add(word);
 		}
-		System.out.println("keys:\n" + index.keySet());
 		
-//		for (Term term : ParsingService.toTerms(words)) {
-//			if (index.containsKey(term)) {
-//				index.put(term, index.get(term));
-//			}
-//			else{
-//				index.put(term, 0);
-//			}
-//		}
-//		System.out.println(index);
+		for (Term term : ParsingService.toTerms(words)) {
+			if (index.containsKey(term)) {
+				index.put(term, index.get(term));
+			}
+			else{
+				index.put(term, 0);
+			}
+		}
+		System.out.println(index);
 	}
 }

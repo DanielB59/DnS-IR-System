@@ -2,6 +2,7 @@ package com.shenkar.ir.entities;
 
 import java.io.Serializable;
 
+import javax.annotation.Generated;
 import javax.persistence.*;
 
 import org.hibernate.annotations.DynamicInsert;

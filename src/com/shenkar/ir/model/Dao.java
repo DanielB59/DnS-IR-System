@@ -42,7 +42,7 @@ public class Dao implements IDao {
 		return instance;
 	}
 	
-	public void insertTerms(List<Term> terms) throws HibernateException {	//	TODO	replace with custom exception!
+	public void insertTerms(Collection<Term> terms) throws HibernateException {	//	TODO	replace with custom exception!
 		Session session = null;
 		
 		try {
@@ -88,6 +88,21 @@ public class Dao implements IDao {
 		}
 		finally {
 			session.close();
+		}
+	}
+	
+	public void insertLinks(Index indexTable) throws HibernateException {
+		try {
+			insertEntity(indexTable.document);
+			insertTerms(indexTable.index.keySet());
+			
+			for (Link link : indexTable.toLinks()) {
+				insertEntity(link);
+			}
+		}
+		catch (HibernateException e) {
+			e.printStackTrace();
+			throw e;
 		}
 	}
 }

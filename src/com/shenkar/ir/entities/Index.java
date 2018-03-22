@@ -6,29 +6,32 @@ import com.shenkar.ir.model.ParsingService;
 
 public class Index  {
 	
-	private HashMap<Term, Integer> index = new HashMap<>();
-	private Document document;
+	public HashMap<Term, Integer> index = new HashMap<>();
+	public Document document;
 
 	public Index() {}
 	
-	public Index(List<String> words) {
-		Set terms = index.keySet();
+	public Index(List<String> words, Document doc) {
+		document = doc;
 		Collections.sort(words);
-		System.out.println(words);
 		ParsingService.transform(words);
-		System.out.println(words);
-		for (String word : words) {
-			terms.add(word);
-		}
 		
-		for (Term term : ParsingService.toTerms(words)) {
-			if (index.containsKey(term)) {
-				index.put(term, index.get(term));
+		for (Term word : ParsingService.toTerms(words)) {
+			if (index.containsKey(word)) {
+				index.put(word, index.get(word)+1);
 			}
 			else{
-				index.put(term, 0);
+				index.put(word, 1);
 			}
 		}
-		System.out.println(index);
+	}
+	
+	public List<Link> toLinks() {
+		List<Link> links = new ArrayList<>();
+		for (Term term : index.keySet()) {
+			links.add(new Link(term, document, index.get(term)));
+		}
+		System.out.println(links);
+		return links;
 	}
 }

@@ -1,9 +1,15 @@
 package com.shenkar.ir.entities;
 
+import java.awt.Desktop;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.annotation.Generated;
 import javax.persistence.*;
+import javax.swing.JButton;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -20,7 +26,7 @@ public class Document implements IEntity, Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String path;
 	
 	@Column(nullable = false)
@@ -31,13 +37,27 @@ public class Document implements IEntity, Serializable {
 
 	@Column(nullable = false)
 	private String description;
+	
+	transient public JButton open = new JButton("Open");
 
 	public Document() {
 		super();
+		open.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Desktop dt = Desktop.getDesktop();
+					dt.open(new File(path));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public Document(Integer id, String path, String title, String author, String description) {
-		super();
+		this();
 		this.id = id;
 		this.path = path;
 		this.title = title;

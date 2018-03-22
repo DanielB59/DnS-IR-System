@@ -36,7 +36,9 @@ public class EntryPoint {
 		
 		ParsingService parser = new ParsingService();
 		parser.readFile(new File("info.txt"));
-		Index myindex = new Index(parser.words);
+		Index myindex = new Index(parser.words, new Document(3, "jhkjh", "ll", "me", "him"));
+		myindex.toLinks();
+		Dao.getInstance().insertLinks(myindex);
 //		Dao.getInstance().insertTerms(parser.toTerms());
 		
 //		Document doc = new Document(1, "", "book", "myself", "derp!");

@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 import javax.swing.JButton;
 

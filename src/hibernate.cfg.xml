@@ -29,6 +29,7 @@
 		<mapping class="com.shenkar.ir.entities.Term"/>
 		<mapping class="com.shenkar.ir.entities.Document"/>
 		<mapping class="com.shenkar.ir.entities.Link"/>
+		<mapping class="com.shenkar.ir.entities.Batch"/>
 
 	</session-factory>
 </hibernate-configuration>

@@ -8,8 +8,8 @@ import com.shenkar.ir.optimizations.Algorithms;
 
 public class ParsingService implements Service {
 	
-	private List<String> lines = new ArrayList<>();
-	public List<String> words = new ArrayList<>();
+	private List<String> lines = null;
+	public List<String> words = null;
 	
 	@SuppressWarnings("serial")
 	public static final Set<String> stopList = new HashSet<String>() {{
@@ -30,6 +30,9 @@ public class ParsingService implements Service {
 		FileInputStream fis = new FileInputStream(document);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
 		
+		lines = new ArrayList<>();
+		words = new ArrayList<>();
+		
 		try {
 			String input = null;
 			while (null != (input = reader.readLine()))
@@ -43,11 +46,9 @@ public class ParsingService implements Service {
 			for (String word : split) {
 				if (stopList.contains(word))
 					continue;
-//				words.add(Algorithms.soundex(Algorithms.stem(word)));
 				words.add(word);
 			}
 		}
-		System.out.println(words);
 		reader.close();
 	}
 	

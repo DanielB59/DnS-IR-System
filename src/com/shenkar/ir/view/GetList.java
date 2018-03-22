@@ -82,8 +82,7 @@ public class GetList {
 		TextArea textArea = new TextArea();
 		textArea.setBounds(10, 10, 275, 241);
 		for (int i = 0 ; i < list.size() ; i++){
-        	textArea.setText(list.get(i).toString());
-        	textArea.setText("\n");  
+			textArea.append(list.get(i).toString()+"\n\n");
         }	
 		panel1.add(textArea);
 		

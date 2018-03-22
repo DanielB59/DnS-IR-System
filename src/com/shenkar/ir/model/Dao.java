@@ -3,13 +3,13 @@ package com.shenkar.ir.model;
 import java.util.*;
 
 import javax.persistence.PersistenceException;
+import javax.persistence.criteria.*;
 
 import org.hibernate.*;
 import org.hibernate.boot.*;
 import org.hibernate.boot.registry.*;
-import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.criterion.Restrictions;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.shenkar.ir.entities.*;
 
 public class Dao implements IDao {
@@ -105,4 +105,36 @@ public class Dao implements IDao {
 			throw e;
 		}
 	}
+	
+	public List<Batch> getAllBatches() {
+		Session session = this.factory.openSession();
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Batch> query = builder.createQuery( Batch.class );
+		Root<Batch> root = query.from( Batch.class );
+		query.select(root);
+		List<Batch> result = session.createQuery(query).getResultList();
+		for (Batch batch : result) {
+			session.beginTransaction();
+			session.remove(batch);
+			session.getTransaction().commit();
+		}
+		session.close();
+		return result;
+	}
+	
+	public List<Link> search(List<String> terms) {
+		Session session = this.factory.openSession();
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Link> query = builder.createQuery( Link.class );
+		Root<Link> root = query.from( Link.class );
+		query.select(root);
+		List<Link> temp = session.createQuery(query).getResultList();
+		session.close();
+		List<Link> result = new ArrayList<Link>();
+		for (Link link : temp) {
+			if (terms.contains(link.getTerm().getTerm()))
+				result.add(link);
+		}
+		return result;
+	} 
 }

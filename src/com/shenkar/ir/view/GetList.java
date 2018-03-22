@@ -73,12 +73,16 @@ public class GetList {
 		
 		ArrayList<Document> list = new ArrayList<Document>();
         Document d = new Document();
-        list.add(d);
+        //list.add(d);
+        list.add(new Document(0, "info.txt", "sdsdfds", "sdfsdf", "dfdfd"));
+		list.add(new Document(0, "info.txt", "sdsdfds", "sdfsdf", "dfdfd"));
+		list.add(new Document(0, "info.txt", "sdsdfds", "sdfsdf", "dfdfd"));
+		list.add(new Document(0, "info2.txt", "sdsdfds", "sdfsdf", "dfdfd"));
 		
 		TextArea textArea = new TextArea();
 		textArea.setBounds(10, 10, 275, 241);
 		for (int i = 0 ; i < list.size() ; i++){
-        	textArea.setText(d.toString());
+        	textArea.setText(list.get(i).toString());
         	textArea.setText("\n");  
         }	
 		panel1.add(textArea);
@@ -88,7 +92,7 @@ public class GetList {
 		frame.getContentPane().add(panel2);
 		
 		for (int i = 0 ; i < list.size() ; i++){
-        	JButton b = new JButton();  
+        	JButton b = list.get(i).open;  
         	panel2.add(b);
         }
 		

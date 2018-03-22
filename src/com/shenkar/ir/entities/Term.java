@@ -20,10 +20,12 @@ public class Term implements IEntity, Serializable {
 	@Column
 	private String term;
 	
-	@Formula("0")
+	@Formula(value = "select count(t.hits) from Link t where t.term = term")
+//	@Formula("0")
 	transient private Integer numberOfDocs;
 
-	@Formula("0")
+	@Formula(value = "select sum(t.hits) from Link t where t.term = term")
+//	@Formula("0")
 	transient private Integer hits;
 
 	public Term() {
@@ -67,7 +69,7 @@ public class Term implements IEntity, Serializable {
 
 	@Override
 	public String toString() {
-		return "Term [term=" + term + ", numberOfDocs=" + numberOfDocs + ", frequency=" + hits + "]";
+		return "Term [term=" + term + /*", numberOfDocs=" + numberOfDocs + ", frequency=" + hits + */"]";
 	}
 
 	@Override

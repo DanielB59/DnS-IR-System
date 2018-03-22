@@ -19,7 +19,7 @@ public class Algorithms {
 	public static String soundex(String term) {
 		StringBuilder builder = new StringBuilder("");
 		String result = null, code = null;
-		
+		if (null == term || term.equals("") || term.equals("\n")) return term;
 		term = term.toUpperCase();
 		builder.append(term.charAt(0));
 		

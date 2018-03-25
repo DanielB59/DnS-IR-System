@@ -1,9 +1,7 @@
 package com.shenkar.ir.entities;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Formula;
@@ -20,13 +18,11 @@ public class Term implements IEntity, Serializable {
 	@Column
 	private String term;
 	
-	@Formula(value = "select count(t.hits) from Link t where t.term = term")
-//	@Formula("0")
-	transient private Integer numberOfDocs;
+	@Formula("(select count(*) from links l where l.term_val = term)")
+	private Integer numberOfDocs;
 
-	@Formula(value = "select sum(t.hits) from Link t where t.term = term")
-//	@Formula("0")
-	transient private Integer hits;
+	@Formula("(select sum(l.hits) from links l where l.term_val = term)")
+	private Integer hits;
 
 	public Term() {
 		super();
@@ -35,8 +31,6 @@ public class Term implements IEntity, Serializable {
 	public Term(String term) {
 		super();
 		this.term = term;
-		this.numberOfDocs = numberOfDocs;
-		this.hits = hits;
 	}
 
 	public String getTerm() {
@@ -69,7 +63,7 @@ public class Term implements IEntity, Serializable {
 
 	@Override
 	public String toString() {
-		return "Term [term=" + term + /*", numberOfDocs=" + numberOfDocs + ", frequency=" + hits + */"]";
+		return "Term [term=" + term + ", numberOfDocs=" + numberOfDocs + ", frequency=" + hits + "]";
 	}
 
 	@Override

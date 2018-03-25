@@ -27,6 +27,6 @@ public class QueryService {
 		ParsingService parser = new ParsingService();
 		parser.readFile(searchQuery);
 		queryWords = parser.words;
-		parser.transform(queryWords);
+		ParsingService.transform(queryWords);
 	}
 }

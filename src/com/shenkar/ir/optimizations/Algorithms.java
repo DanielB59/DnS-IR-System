@@ -6,6 +6,7 @@ public class Algorithms {
 	private Algorithms() {};
 	//probably visitor design pattern
 	
+	@SuppressWarnings("serial")
 	public static final HashMap<String, String> dictionary = new HashMap<String, String>(){{
 		//put("AEHIOUWY","0");
 		put("BFPV","1");

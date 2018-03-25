@@ -1,14 +1,11 @@
 package com.shenkar.ir.model;
 
 import java.util.*;
-
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.*;
-
 import org.hibernate.*;
 import org.hibernate.boot.*;
 import org.hibernate.boot.registry.*;
-import org.hibernate.criterion.Restrictions;
 
 import com.shenkar.ir.entities.*;
 
@@ -116,6 +113,22 @@ public class Dao implements IDao {
 		for (Batch batch : result) {
 			session.beginTransaction();
 			session.remove(batch);
+			session.getTransaction().commit();
+		}
+		session.close();
+		return result;
+	}
+	
+	public List<Term> getAllTerms() {
+		Session session = this.factory.openSession();
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Term> query = builder.createQuery( Term.class );
+		Root<Term> root = query.from( Term.class );
+		query.select(root);
+		List<Term> result = session.createQuery(query).getResultList();
+		for (Term term : result) {
+			session.beginTransaction();
+			session.remove(term);
 			session.getTransaction().commit();
 		}
 		session.close();

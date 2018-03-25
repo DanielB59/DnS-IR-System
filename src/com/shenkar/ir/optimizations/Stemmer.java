@@ -34,8 +34,6 @@ package com.shenkar.ir.optimizations;
 
 */
 
-import java.io.*;
-
 /**
  * Stemmer, implementing the Porter Stemming Algorithm
  *

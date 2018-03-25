@@ -44,23 +44,31 @@ public class ParsingService implements Service {
 		for (String line : lines) {
 			String[] split = line.split(regex);
 			for (String word : split) {
-				if (stopList.contains(word))
-					continue;
-				words.add(word);
+				if (!stopList.contains(word.toLowerCase()))
+					words.add(word);
 			}
 		}
 		reader.close();
 	}
 	
 	public static void transform(List<String> words) {
-		for (int i = 0; i < words.size(); ++i)
+		for (int i = 0; i < words.size(); ++i) {
+			String temp = words.get(i);
 			words.set(i, Algorithms.soundex(Algorithms.stem(words.get(i))));
+			if (words.get(i).equals("L100")) { 
+				System.out.println(temp);
+				System.out.println(words.get(i));
+			}
+		}
 	}
 	
 	public static List<Term> toTerms(List<String> words) {
 		List<Term> terms = new ArrayList<>();
-		for (String word : words)
-			terms.add(new Term(word));
+		for (String word : words) {
+			if (null != word)
+				if (!word.equals("") && !word.equals("\n"))
+					terms.add(new Term(word));
+		}
 		return terms;
 	}
 }

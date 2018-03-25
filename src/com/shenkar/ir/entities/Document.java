@@ -37,6 +37,9 @@ public class Document implements IEntity, Serializable {
 	@Column(nullable = false)
 	private String description;
 	
+	@Column(nullable = false)
+	Boolean active;
+	
 	transient public JButton open = new JButton("Open");
 
 	public Document() {
@@ -55,13 +58,14 @@ public class Document implements IEntity, Serializable {
 		});
 	}
 
-	public Document(Integer id, String path, String title, String author, String description) {
+	public Document(Integer id, String path, String title, String author, String description, Boolean active) {
 		this();
 		this.id = id;
 		this.path = path;
 		this.title = title;
 		this.author = author;
 		this.description = description;
+		this.active = active;
 	}
 
 	public Integer getId() {
@@ -104,6 +108,14 @@ public class Document implements IEntity, Serializable {
 		this.description = description;
 	}
 
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -111,16 +123,17 @@ public class Document implements IEntity, Serializable {
 	@Override
 	public String toString() {
 		return "Document [id=" + id + ", path=" + path + ", title=" + title + ", author=" + author + ", description="
-				+ description + "]";
+				+ description + ", active=" + active + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((active == null) ? 0 : active.hashCode());
 		result = prime * result + ((author == null) ? 0 : author.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + id;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((path == null) ? 0 : path.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
@@ -135,6 +148,11 @@ public class Document implements IEntity, Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Document other = (Document) obj;
+		if (active == null) {
+			if (other.active != null)
+				return false;
+		} else if (!active.equals(other.active))
+			return false;
 		if (author == null) {
 			if (other.author != null)
 				return false;
@@ -145,7 +163,10 @@ public class Document implements IEntity, Serializable {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (id != other.id)
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		if (path == null) {
 			if (other.path != null)

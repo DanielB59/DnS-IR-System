@@ -3,8 +3,6 @@ package com.shenkar.ir.entities;
 import java.io.Serializable;
 
 import javax.persistence.*;
-import javax.swing.JButton;
-
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 

@@ -1,145 +1,125 @@
 package com.shenkar.ir.view;
 
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
-import java.awt.Color;
-import java.awt.Font;
-import javax.swing.SwingConstants;
-import java.awt.Button;
-import javax.swing.JTextPane;
-import javax.swing.JFormattedTextField;
-import javax.swing.JEditorPane;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.ButtonGroup;
-import javax.swing.JPopupMenu;
-import java.awt.Component;
-import java.awt.Canvas;
-import javax.swing.JLabel;
-import java.awt.Panel;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.*;
+import java.util.*;
+import java.util.List;
 
-public class View extends JFrame{
-	JPanel panelAdmin = new JPanel();
-	private final ButtonGroup buttonGroup = new ButtonGroup();
-	public View() {
-		
-		setTitle("Ir system");
-		setBackground(new Color(255, 255, 255));
-		getContentPane().setLayout(null);
-		
-		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 424, 319);
-		getContentPane().add(panel);
-		panel.setLayout(null);
-		
-		JFormattedTextField formattedTextField = new JFormattedTextField();
-		formattedTextField.setBounds(49, 189, 337, 23);
-		panel.add(formattedTextField);
-		formattedTextField.setBackground(new Color(255, 255, 153));
-		
-		JButton btnAdmin = new JButton("Admin panel");
-		btnAdmin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				setContentPane(panelAdmin);
-				repaint();
-				panelAdmin.revalidate();
-			}
-		});
-		btnAdmin.setBounds(10, 11, 110, 23);
-		panel.add(btnAdmin);
-		
-		Button button = new Button("press for search");
-		button.setBounds(164, 238, 96, 22);
-		panel.add(button);
-		button.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-			}
-		});
-		button.setActionCommand("search_button\r\n");
-		button.setBackground(new Color(255, 204, 51));
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		
-		JLabel lblIrSystem = new JLabel("IR System");
-		lblIrSystem.setBounds(121, 83, 184, 60);
-		panel.add(lblIrSystem);
-		lblIrSystem.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIrSystem.setFont(new Font("David", Font.BOLD, 38));
-		
-		
-		
-		getContentPane().add(panelAdmin);
-		 
-		panelAdmin.add(new JButton("login"));
-		
-			panelAdmin.setLayout(null);
+import javax.swing.*;
 
-			JLabel userLabel = new JLabel("User");
-			userLabel.setBounds(10, 10, 80, 25);
-			panelAdmin.add(userLabel);
+import com.shenkar.ir.entities.*;
+import com.shenkar.ir.model.*;
+import com.shenkar.ir.optimizations.Algorithms;
 
-			JTextField userText = new JTextField(20);
-			userText.setBounds(100, 10, 160, 25);
-			panelAdmin.add(userText);
-
-			JLabel passwordLabel = new JLabel("Password");
-			passwordLabel.setBounds(10, 40, 80, 25);
-			panelAdmin.add(passwordLabel);
-
-			JPasswordField passwordText = new JPasswordField(20);
-			passwordText.setBounds(100, 40, 160, 25);
-			panelAdmin.add(passwordText);
-
-			JButton loginButton = new JButton("login");
-			loginButton.setBounds(10, 80, 80, 25);
-			panelAdmin.add(loginButton);
-		
+public class View implements Runnable {
 	
-		
-		
+	private static View instance = null;
 	
+	public static View getInstance() {
+		if (null == instance)
+			instance = new View();
+		return instance;
 	}
+	
+	private View() {}
+	
+	private JFrame frame = null;
+	private JPanel content = null;
+	
+	private JTextField input = null;
+	private JButton search = null;
+	private JButton admin = null;
+	
+	private JTextArea preview = null;
+	
+	public Map<String, List<String>> translate = new HashMap<String, List<String>>();
+	
+	public void setPreview(Document doc) throws IOException {
+		preview.setText("");
+		FileInputStream fis = new FileInputStream(doc.getPath());
+		BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+		
+		try {
+			String input = null;
+			while (null != (input = reader.readLine()))
+				preview.append(input+"\n");
+		} catch (EOFException e) {
+			e.printStackTrace();
+		}
+		
+		highlight();
+	}
+	
+	private void highlight() {
+		//	TODO
+		System.out.println("TODO");
+	}
+	
+	private void init() {
+		input = new JTextField(50);
+		
+		search = new JButton("Search");
+		search.addActionListener(new ActionListener() {
 			
-	public static void main(String[] args)    { 
-
-		    JFrame frame = new View();
-		    frame.setTitle("View");
-		    frame.setLocation(400, 50);
-		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		    frame.setSize(600, 600);
-		    frame.setAlwaysOnTop(true);
-		    frame.setVisible(true); 
-	}
-	private static void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
+			@SuppressWarnings("serial")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					QueryService.processQuery(input.getText());
+					translate.clear();
+					for (String word : QueryService.queryWords) {
+						String opti = Algorithms.soundex(Algorithms.stem(word));
+						if (translate.containsKey(opti))
+							translate.get(opti).add(word);
+						else
+							translate.put(opti, new ArrayList<String>(){{add(word);}});
+					}
+					QueryService.optimizeQuery();
+					JResultTable.getResultTable().updateData(Dao.getInstance().search(QueryService.queryWords));
+					View.getInstance().frame.repaint();
+				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
-			}
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});
+		
+		admin = new JButton("admin");
+		admin.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//	TODO
+			}
+		});
+		
+		preview = new JTextArea(25, 40);
+		preview.setAutoscrolls(true);
+		preview.setEditable(false);
+		
+		content = new JPanel();
+		content.add(input);
+		content.add(search);
+		content.add(admin);
+		
+		frame = new JFrame("IR DnS:");
+		frame.setBounds(0, 0, 1000, 600);
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new FlowLayout());
+		frame.setContentPane(content);
+		frame.add(JResultTable.getResultTable());
+		frame.add(new JScrollPane(preview));
+		frame.setResizable(false);
+		frame.setVisible(true);
+	}
+
+	@Override
+	public void run() {
+		init();
+		ButtonColumn buttonColumn = new ButtonColumn(JResultTable.getResultTable().table, JResultTable.getResultTable().open, 3);
+		buttonColumn.setMnemonic(KeyEvent.VK_D);
 	}
 }

@@ -63,7 +63,8 @@ public class Term implements IEntity, Serializable {
 
 	@Override
 	public String toString() {
-		return "Term [term=" + term + ", numberOfDocs=" + numberOfDocs + ", frequency=" + hits + "]";
+//		return "Term [term=" + term + ", numberOfDocs=" + numberOfDocs + ", frequency=" + hits + "]";
+		return term;
 	}
 
 	@Override

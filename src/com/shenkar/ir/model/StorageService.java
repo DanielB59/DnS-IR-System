@@ -5,7 +5,7 @@ import org.hibernate.HibernateException;
 
 import com.shenkar.ir.entities.*;
 
-public class StorageService implements Service {
+public class StorageService {
 	
 	public static void addBatch(String path) throws IOException, HibernateException, ClassNotFoundException {
 		Dao.getInstance().insertEntity(new Batch(path));

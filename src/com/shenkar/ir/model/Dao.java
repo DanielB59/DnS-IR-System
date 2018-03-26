@@ -9,7 +9,7 @@ import org.hibernate.boot.registry.*;
 
 import com.shenkar.ir.entities.*;
 
-public class Dao implements IDao {
+public class Dao {
 	
 	private static Dao instance = null;
 	

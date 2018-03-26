@@ -122,8 +122,9 @@ public class Document implements IEntity, Serializable {
 
 	@Override
 	public String toString() {
-		return "Document [id=" + id + ", path=" + path + ", title=" + title + ", author=" + author + ", description="
-				+ description + ", active=" + active + "]";
+//		return "Document [id=" + id + ", path=" + path + ", title=" + title + ", author=" + author + ", description="
+//				+ description + ", active=" + active + "]";
+		return title;
 	}
 
 	@Override

@@ -21,12 +21,12 @@ public class QueryService {
 		DataOutputStream dos = new DataOutputStream(fos);
 		dos.write(input.getBytes());
 		dos.close();
-	}
-	
-	public static void optimizeQuery() throws IOException {
 		ParsingService parser = new ParsingService();
 		parser.readFile(searchQuery);
 		queryWords = parser.words;
+	}
+	
+	public static void optimizeQuery() throws IOException {
 		ParsingService.transform(queryWords);
 	}
 }

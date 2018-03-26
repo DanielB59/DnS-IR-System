@@ -6,7 +6,7 @@ import java.util.*;
 import com.shenkar.ir.entities.*;
 import com.shenkar.ir.optimizations.Algorithms;
 
-public class ParsingService implements Service {
+public class ParsingService {
 	
 	private List<String> lines = null;
 	public List<String> words = null;
@@ -53,12 +53,7 @@ public class ParsingService implements Service {
 	
 	public static void transform(List<String> words) {
 		for (int i = 0; i < words.size(); ++i) {
-			String temp = words.get(i);
 			words.set(i, Algorithms.soundex(Algorithms.stem(words.get(i))));
-			if (words.get(i).equals("L100")) { 
-				System.out.println(temp);
-				System.out.println(words.get(i));
-			}
 		}
 	}
 	

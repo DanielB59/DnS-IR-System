@@ -74,10 +74,10 @@ public class GetList {
 		ArrayList<Document> list = new ArrayList<Document>();
         Document d = new Document();
         //list.add(d);
-        list.add(new Document(0, "info.txt", "sdsdfds", "sdfsdf", "dfdfd"));
+        /*list.add(new Document(0, "info.txt", "sdsdfds", "sdfsdf", "dfdfd"));
 		list.add(new Document(0, "info.txt", "sdsdfds", "sdfsdf", "dfdfd"));
 		list.add(new Document(0, "info.txt", "sdsdfds", "sdfsdf", "dfdfd"));
-		list.add(new Document(0, "info2.txt", "sdsdfds", "sdfsdf", "dfdfd"));
+		list.add(new Document(0, "info2.txt", "sdsdfds", "sdfsdf", "dfdfd"));*/
 		
 		TextArea textArea = new TextArea();
 		textArea.setBounds(10, 10, 275, 241);

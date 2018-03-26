@@ -3,15 +3,17 @@
 ## students:
 Sagi Fridman - id: 305010969 
 Daniel Benzvi - id: 301770640
-#Admin- 
+
+## Admin- 
 
 for upload a file .TXT, we need to write on the banch the name of the file. 
 after you put the file name you need to press batch. 
 if we not get error messeage so its works, and if we have some problam in the batch so we will get a erroer message.
 the error message you will get only after the processes button.
 
-disable button - get number of doc. all doc we have number. 
+## disable 
 
+disable button - chose the number of doc. from the right window on gui.
 
 
 ## search - 

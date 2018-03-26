@@ -7,8 +7,14 @@ import java.awt.event.KeyEvent;
 import java.io.*;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
+import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 
 import com.shenkar.ir.entities.*;
 import com.shenkar.ir.model.*;
@@ -38,6 +44,7 @@ public class View implements Runnable {
 	public Map<String, List<String>> translate = new HashMap<String, List<String>>();
 	
 	public void setPreview(Document doc) throws IOException {
+		preview.getHighlighter().removeAllHighlights();
 		preview.setText("");
 		FileInputStream fis = new FileInputStream(doc.getPath());
 		BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
@@ -50,12 +57,29 @@ public class View implements Runnable {
 			e.printStackTrace();
 		}
 		
-		highlight();
+		try {
+			highlight(preview, translate.keySet());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	private void highlight() {
+	private void highlight(JTextArea area, Set<String> values) throws BadLocationException {
 		//	TODO
-		System.out.println("TODO");
+		Pattern pattern = Pattern.compile("[\\w][)( \n\r\\/,.\"?!]+");
+		Matcher matcher = pattern.matcher(preview.getDocument().getText(0, preview.getDocument().getLength()));
+		Highlighter lighter = preview.getHighlighter();
+		HighlightPainter painter = new DefaultHighlightPainter(Color.YELLOW);
+		int pos = 0;
+		while (matcher.find(pos)) {
+			int start = matcher.start();
+			int end = matcher.end();
+			String key = preview.getDocument().getText(start, end);
+			System.out.println(key);
+			if (!ParsingService.stopList.contains(key.toLowerCase()) && translate.containsKey(Algorithms.soundex(Algorithms.stem(key))));
+				lighter.addHighlight(start, end, painter);
+			pos = end;
+		}
 	}
 	
 	private void init() {

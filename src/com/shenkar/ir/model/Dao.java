@@ -145,8 +145,10 @@ public class Dao {
 		session.close();
 		List<Link> result = new ArrayList<Link>();
 		for (Link link : temp) {
-			if (terms.contains(link.getTerm().getTerm()) && link.getDocument().getActive())
+			if (terms.contains(link.getTerm().getTerm()) && link.getDocument().getActive()) {
+				System.out.println(link);
 				result.add(link);
+			}
 		}
 		return result;
 	}

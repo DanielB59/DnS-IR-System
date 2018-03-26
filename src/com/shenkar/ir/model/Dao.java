@@ -145,9 +145,48 @@ public class Dao {
 		session.close();
 		List<Link> result = new ArrayList<Link>();
 		for (Link link : temp) {
-			if (terms.contains(link.getTerm().getTerm()))
+			if (terms.contains(link.getTerm().getTerm()) && link.getDocument().getActive())
 				result.add(link);
 		}
 		return result;
-	} 
+	}
+	
+	public Document getDocument(Integer id) {
+		Session session = this.factory.openSession();
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Document> query = builder.createQuery( Document.class );
+		Root<Document> root = query.from( Document.class );
+		query.select(root).where(builder.equal(root.get("id"), id));
+		List<Document> result = session.createQuery(query).getResultList();
+		session.close();
+		if (result.size() == 1)
+			return result.get(0);
+		else
+			return null;
+	}
+	
+	public void disableDocuments(Document... docs) {
+		Session session = null;
+		
+		try {
+			session = factory.openSession();
+			
+			session.beginTransaction();
+			
+			for (Document doc : docs) {
+				doc.setActive(false);
+				session.update(doc);
+			}
+			
+			session.getTransaction().commit();
+		}
+		catch (HibernateException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+			throw e;
+		}
+		finally {
+			session.close();
+		}
+	}
 }

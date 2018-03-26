@@ -38,7 +38,7 @@ public class Document implements IEntity, Serializable {
 	private String description;
 	
 	@Column(nullable = false)
-	Boolean active;
+	Boolean active = true;
 	
 	transient public JButton open = new JButton("Open");
 

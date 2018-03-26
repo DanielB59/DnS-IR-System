@@ -91,7 +91,7 @@ public class View implements Runnable {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//	TODO
+				ViewAdmin.getInstance().toggleVisibility();
 			}
 		});
 		
@@ -119,6 +119,7 @@ public class View implements Runnable {
 	@Override
 	public void run() {
 		init();
+		ViewAdmin.getInstance().run();
 		ButtonColumn buttonColumn = new ButtonColumn(JResultTable.getResultTable().table, JResultTable.getResultTable().open, 3);
 		buttonColumn.setMnemonic(KeyEvent.VK_D);
 	}

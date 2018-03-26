@@ -7,19 +7,19 @@ import java.awt.event.KeyEvent;
 import java.io.*;
 import java.util.*;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
+import javax.swing.text.*;
 import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Highlighter;
-import javax.swing.text.Highlighter.HighlightPainter;
+import javax.swing.text.JTextComponent;
 
 import com.shenkar.ir.entities.*;
+import com.shenkar.ir.entities.Document;
 import com.shenkar.ir.model.*;
 import com.shenkar.ir.optimizations.Algorithms;
 
+@SuppressWarnings("unused")
 public class View implements Runnable {
 	
 	private static View instance = null;
@@ -58,28 +58,56 @@ public class View implements Runnable {
 		}
 		
 		try {
-			highlight(preview, translate.keySet());
+			highlight();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void highlight(JTextArea area, Set<String> values) throws BadLocationException {
-		//	TODO
-		Pattern pattern = Pattern.compile("[\\w][)( \n\r\\/,.\"?!]+");
-		Matcher matcher = pattern.matcher(preview.getDocument().getText(0, preview.getDocument().getLength()));
-		Highlighter lighter = preview.getHighlighter();
-		HighlightPainter painter = new DefaultHighlightPainter(Color.YELLOW);
-		int pos = 0;
-		while (matcher.find(pos)) {
-			int start = matcher.start();
-			int end = matcher.end();
-			String key = preview.getDocument().getText(start, end);
-			System.out.println(key);
-			if (!ParsingService.stopList.contains(key.toLowerCase()) && translate.containsKey(Algorithms.soundex(Algorithms.stem(key))));
-				lighter.addHighlight(start, end, painter);
-			pos = end;
-		}
+	private void highlight() throws BadLocationException {
+		JTextComponent textComp = preview;
+		try {
+			Highlighter hilite = textComp.getHighlighter();
+
+			String text = textComp.getText();
+			String line = null;
+			int start = 0;
+			int end;
+			int totalLines = ((JTextArea) textComp).getLineCount();
+//			System.out.println("totalLines: " + totalLines);
+			for (int i=0; i < totalLines; i++) {
+				start = ((JTextArea) textComp).getLineStartOffset(i);
+				end = ((JTextArea) textComp).getLineEndOffset(i);
+				line = text.substring(start, end);
+
+				for (List<String> list : translate.values()) {
+				int pos = start;
+					for (String word : list) {
+						if ((pos = text.indexOf(word, pos)) >= 0) {
+							hilite.addHighlight(pos, pos + word.length(), new DefaultHighlightPainter(Color.YELLOW));
+							pos += word.length();
+						}
+					}
+				}
+			}
+	    } catch (BadLocationException e) {
+	    	e.printStackTrace();
+	    }
+
+//		Pattern pattern = Pattern.compile("[\\W]");//(?=(\\b"+ "\\w" + "\\b))\\W");
+//		Matcher matcher = pattern.matcher(preview.getDocument().getText(0, preview.getDocument().getLength()));
+//		Highlighter lighter = preview.getHighlighter();
+//		HighlightPainter painter = new DefaultHighlightPainter(Color.YELLOW);
+//		int pos = 0;
+//		while (matcher.find(pos)) {
+//			int start = pos;
+//			int end = matcher.start("\\w");//matcher.end();
+//			String key = preview.getDocument().getText(start, end);
+//			System.out.println("derp: " + key);
+//			if (!ParsingService.stopList.contains(key.toLowerCase()) && translate.containsKey(Algorithms.soundex(Algorithms.stem(key))));
+//				lighter.addHighlight(start, end, painter);
+//			pos = matcher.end();
+//		}
 	}
 	
 	private void init() {

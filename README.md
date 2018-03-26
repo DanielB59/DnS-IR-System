@@ -1,4 +1,4 @@
-# DnS IR System Profesor Emanuel Gruengard
+# DnS IR System Professor Emanuel Gruengard
 
 ## students:
 Sagi Fridman - id: 305010969 
@@ -8,7 +8,7 @@ Daniel Benzvi - id: 301770640
 
 for upload a file .TXT, we need to write on the banch the name of the file. 
 after you put the file name you need to press batch. 
-if we not get error messeage so its works, and if we have some problam in the batch so we will get a erroer message.
+if we not get error message so its works, and if we have some problem in the batch so we will get a error message.
 the error message you will get only after the processes button.
 
 ## disable 
@@ -29,12 +29,12 @@ if we press on 3 list except the open button so we will get a preview on the rig
 if you press on the open button so we will open the file.
 
 
-## bouns we did - 
+## bonus we did - 
 
 soundex - word relation by sound. 
 
-example - we have word seimler on sound them equel.
+example - we have word seemlier on sound them equal.
 
 stemming - find a root of word.
 
-firest we do stemming and after soundex. 
+first we do stemming and after soundex.
